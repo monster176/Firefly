@@ -1,0 +1,1 @@
+import"./navBarConfig.83noeqNj.js";import"./zh_TW.BaGjsdQr.js";function u(o,r){const t=o.replace(/^\/|\/$/g,"").toLowerCase(),e=r.replace(/^\/|\/$/g,"").toLowerCase();return t===e}function n(...o){return o.join("/").replace(/\/+/g,"/")}function l(o){return a(`/posts/${o}/`)}function a(o){return n("","/Firefly/",o)}export{l as g,u as p,a as u};
