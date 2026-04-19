@@ -29,9 +29,9 @@ import mdx from "@astrojs/mdx";
 import searchIndexer from "./src/integrations/searchIndex.mts";
 // https://astro.build/config
 export default defineConfig({
-	site: "https://firefly.cuteleaf.cn/",
+	site: "https://monster176.github.io/Firefly/",
 
-	base: "/",
+	base: "/Firefly/",
 	trailingSlash: "always",
 	integrations: [
 		tailwind({
