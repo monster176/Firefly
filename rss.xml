@@ -1,0 +1,1287 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>次元補給ステーション - </title><description>Welcome to ShadowGarden !!!</description><link>https://firefly.cuteleaf.cn/</link><language>zh_CN</language><item><title>Qt / 工业软件 / 上位机 / 桌面客户端 八股文</title><link>https://firefly.cuteleaf.cn/posts/qt%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6%E4%B8%8A%E4%BD%8D%E6%9C%BA%E6%A1%8C%E9%9D%A2%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87/</link><guid isPermaLink="true">https://firefly.cuteleaf.cn/posts/qt%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6%E4%B8%8A%E4%BD%8D%E6%9C%BA%E6%A1%8C%E9%9D%A2%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%85%AB%E8%82%A1%E6%96%87/</guid><description>Qt、工业软件、上位机、桌面客户端方向面试八股文整理，涵盖信号槽、事件、线程、串口网络、模型视图和项目架构。</description><pubDate>Wed, 08 Apr 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Qt / 工业软件 / 上位机 / 桌面客户端 八股文&lt;/h1&gt;
+&lt;p&gt;下面这份是 &lt;strong&gt;Qt / 工业软件 / 上位机 / 桌面客户端方向的面试八股文&lt;/strong&gt;，按面试最常见的逻辑整理：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Qt 基础&lt;/li&gt;
+&lt;li&gt;信号槽与对象模型&lt;/li&gt;
+&lt;li&gt;事件机制&lt;/li&gt;
+&lt;li&gt;线程与并发&lt;/li&gt;
+&lt;li&gt;网络与串口&lt;/li&gt;
+&lt;li&gt;界面与模型视图&lt;/li&gt;
+&lt;li&gt;项目架构&lt;/li&gt;
+&lt;li&gt;工业软件高频问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这份内容兼顾两种用途：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;速背版：方便面试前快速过一遍&lt;/li&gt;
+&lt;li&gt;理解版：方便真正答得像做过项目的人&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;一、Qt 是什么？为什么工业软件爱用 Qt？&lt;/h2&gt;
+&lt;h3&gt;1. 什么是 Qt？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+Qt 是一个跨平台的 C++ 图形界面应用开发框架，除了 GUI 以外，还提供了网络、线程、文件、数据库、串口、OpenGL、XML、JSON、事件系统等大量模块，适合开发桌面客户端、工业上位机、嵌入式界面和跨平台工具软件。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;展开一点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Qt 不只是做界面&lt;/li&gt;
+&lt;li&gt;它本质上是一套完整的应用开发框架&lt;/li&gt;
+&lt;li&gt;工业软件里经常用它做：&lt;/li&gt;
+&lt;li&gt;上位机&lt;/li&gt;
+&lt;li&gt;设备配置工具&lt;/li&gt;
+&lt;li&gt;数据监控界面&lt;/li&gt;
+&lt;li&gt;工控客户端&lt;/li&gt;
+&lt;li&gt;检测分析软件&lt;/li&gt;
+&lt;li&gt;医疗设备界面&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;2. 为什么工业软件、上位机常用 Qt？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+因为 Qt 跨平台能力强、界面开发效率高、信号槽机制适合事件驱动开发、提供串口/网络/文件/线程等完整模块，能很好支持设备通信、实时数据显示和复杂桌面交互。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;面试加分点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Qt 对 Windows 和 Linux 支持都比较成熟&lt;/li&gt;
+&lt;li&gt;适合做“设备 + 通信 + 界面”一体化软件&lt;/li&gt;
+&lt;li&gt;工业项目经常要求稳定、可维护、开发周期短，Qt 很匹配&lt;/li&gt;
+&lt;li&gt;Qt Designer、QSS、模型视图框架，也能提高开发效率&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;二、Qt 对象模型与信号槽&lt;/h2&gt;
+&lt;h3&gt;3. QObject 是什么？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+QObject 是 Qt 对象模型的基础类，提供了对象树、父子对象管理、信号槽机制、事件处理、元对象系统等能力。很多 Qt 类都直接或间接继承自 QObject。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;补充：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;QObject 提供的核心能力：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;父子对象自动析构&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;signals&lt;/code&gt; / &lt;code&gt;slots&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;event()&lt;/code&gt; 事件处理&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;objectName&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;findChild&lt;/code&gt; / &lt;code&gt;findChildren&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;metaObject()&lt;/code&gt; 反射能力&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;4. Qt 的父子对象机制是什么？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+Qt 中 QObject 支持父子对象机制，如果一个对象设置了父对象，那么父对象析构时会自动析构其所有子对象，从而简化内存管理。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这是 Qt 很核心的内存管理方式&lt;/li&gt;
+&lt;li&gt;适用于 QObject 体系对象&lt;/li&gt;
+&lt;li&gt;如果一个控件加到布局里，通常也会建立父子关系&lt;/li&gt;
+&lt;li&gt;手动 delete 时要小心重复释放&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;面试常见追问：父对象析构后，子对象还要不要手动释放？&lt;/strong&gt;&lt;br /&gt;
+不用。父对象析构时会自动释放子对象。&lt;/p&gt;
+&lt;h3&gt;5. 什么是信号槽机制？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+信号槽是 Qt 提供的一种对象间通信机制。一个对象在状态变化时发出 signal，另一个对象通过 slot 接收并处理，从而实现低耦合的事件驱动编程。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;优点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;解耦&lt;/li&gt;
+&lt;li&gt;可读性强&lt;/li&gt;
+&lt;li&gt;一个信号可以连接多个槽&lt;/li&gt;
+&lt;li&gt;多个信号也可以连接同一个槽&lt;/li&gt;
+&lt;li&gt;适合 GUI 和设备事件处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;6. 信号和槽底层是怎么实现的？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+Qt 的信号槽机制依赖元对象系统实现。带有 &lt;code&gt;Q_OBJECT&lt;/code&gt; 宏的类会由 &lt;code&gt;moc&lt;/code&gt; 工具生成额外代码，里面包含元信息、信号槽索引和调用逻辑。调用 &lt;code&gt;emit&lt;/code&gt; 发射信号时，本质上会进入 Qt 的元对象系统，找到所有已连接槽函数并依次调用。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;展开要点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;signals&lt;/code&gt; 和 &lt;code&gt;slots&lt;/code&gt; 不是标准 C++ 关键字&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;moc&lt;/code&gt; 会生成元对象代码&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;emit&lt;/code&gt; 本质上是语法提示，编译后就是普通函数调用&lt;/li&gt;
+&lt;li&gt;连接关系由 Qt 内部维护&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;7. 为什么自定义类要加 &lt;code&gt;Q_OBJECT&lt;/code&gt;？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+如果类中使用了信号槽、动态属性、反射、对象名查找等元对象功能，就必须加 &lt;code&gt;Q_OBJECT&lt;/code&gt; 宏，否则 moc 不会生成对应元信息，信号槽等机制无法正常工作。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;常见答法：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用信号槽必须加&lt;/li&gt;
+&lt;li&gt;用 &lt;code&gt;metaObject()&lt;/code&gt;、&lt;code&gt;qobject_cast&lt;/code&gt; 等通常也依赖它&lt;/li&gt;
+&lt;li&gt;忘了加会导致链接错误或运行时连接失败&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;8. Qt5 新连接语法和旧语法的区别？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;旧语法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;connect(sender, SIGNAL(valueChanged(int)), receiver, SLOT(onValueChanged(int)));
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;新语法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;connect(sender, &amp;amp;Sender::valueChanged, receiver, &amp;amp;Receiver::onValueChanged);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;新语法优点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;编译期检查&lt;/li&gt;
+&lt;li&gt;类型更安全&lt;/li&gt;
+&lt;li&gt;不依赖字符串&lt;/li&gt;
+&lt;li&gt;更容易重构&lt;/li&gt;
+&lt;li&gt;可配合 lambda 使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;面试结论：&lt;/strong&gt;&lt;br /&gt;
+项目里优先使用 Qt5 新连接语法。&lt;/p&gt;
+&lt;h3&gt;9. 信号槽连接方式有哪些？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Qt 常见连接方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Qt::AutoConnection&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Qt::DirectConnection&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Qt::QueuedConnection&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Qt::BlockingQueuedConnection&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Qt::UniqueConnection&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;各自含义：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;AutoConnection&lt;/code&gt;：默认方式，同线程直接调用，跨线程排队调用&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DirectConnection&lt;/code&gt;：立即调用槽函数，类似普通函数调用&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QueuedConnection&lt;/code&gt;：把调用放入接收者线程事件队列&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;BlockingQueuedConnection&lt;/code&gt;：发送线程阻塞，直到槽执行完&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;UniqueConnection&lt;/code&gt;：防止重复连接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;高频追问：跨线程为什么常用 QueuedConnection？&lt;/strong&gt;&lt;br /&gt;
+因为槽函数需要在接收者所属线程执行，QueuedConnection 会通过事件队列切换线程，线程更安全。&lt;/p&gt;
+&lt;h3&gt;10. signal 可以连接 signal 吗？&lt;/h3&gt;
+&lt;p&gt;可以。&lt;br /&gt;
+一个信号可以连接另一个信号，前一个信号发出时，后一个信号也会被发出。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;三、事件机制&lt;/h2&gt;
+&lt;h3&gt;11. Qt 的事件机制是什么？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+Qt 是事件驱动框架。用户操作、定时器、网络、鼠标键盘、窗口重绘等都会被封装成事件，进入事件队列，由事件循环分发给对应对象处理。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;核心流程：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;事件产生&lt;/li&gt;
+&lt;li&gt;投递到事件队列&lt;/li&gt;
+&lt;li&gt;事件循环取出事件&lt;/li&gt;
+&lt;li&gt;分发给目标对象&lt;/li&gt;
+&lt;li&gt;对象通过 &lt;code&gt;event()&lt;/code&gt; 或具体事件函数处理&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;12. 事件循环是什么？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+事件循环是 Qt 应用运行的核心机制，由 &lt;code&gt;QCoreApplication::exec()&lt;/code&gt; 或 &lt;code&gt;QApplication::exec()&lt;/code&gt; 启动。它不断从系统或 Qt 事件队列中取出事件并分发处理，使 GUI、定时器、网络异步操作能够持续工作。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;面试加分说法：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;没有事件循环，界面无法响应&lt;/li&gt;
+&lt;li&gt;定时器、queued signal、异步 socket 也依赖事件循环&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;13. &lt;code&gt;event()&lt;/code&gt; 和具体事件函数的区别？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;event()&lt;/code&gt; 是总入口&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mousePressEvent()&lt;/code&gt;、&lt;code&gt;paintEvent()&lt;/code&gt;、&lt;code&gt;keyPressEvent()&lt;/code&gt; 等是具体事件处理函数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通常 Qt 先把事件交给 &lt;code&gt;event()&lt;/code&gt;，再由 &lt;code&gt;event()&lt;/code&gt; 分发到具体事件函数。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;什么时候重写 &lt;code&gt;event()&lt;/code&gt;？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;想统一拦截多种事件&lt;/li&gt;
+&lt;li&gt;处理某些特殊事件类型&lt;/li&gt;
+&lt;li&gt;具体事件函数无法满足需求时&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;14. 事件过滤器是什么？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+事件过滤器允许一个对象在另一个对象接收事件之前先拦截和处理事件。通过 &lt;code&gt;installEventFilter()&lt;/code&gt; 安装，重写 &lt;code&gt;eventFilter()&lt;/code&gt; 实现。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;适用场景：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;统一拦截多个控件事件&lt;/li&gt;
+&lt;li&gt;做全局快捷键&lt;/li&gt;
+&lt;li&gt;输入框特殊行为控制&lt;/li&gt;
+&lt;li&gt;表格、列表统一鼠标键盘处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;返回值含义：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;true&lt;/code&gt;：事件已处理，不再继续分发&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;false&lt;/code&gt;：继续分发给目标对象&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;15. &lt;code&gt;update()&lt;/code&gt; 和 &lt;code&gt;repaint()&lt;/code&gt; 的区别？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;update()&lt;/code&gt; 是异步刷新，发送重绘请求，等待事件循环统一处理&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;repaint()&lt;/code&gt; 是同步重绘，立即调用绘制流程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;一般建议：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;优先用 &lt;code&gt;update()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;repaint()&lt;/code&gt; 频繁调用可能影响性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;四、Qt 线程与并发&lt;/h2&gt;
+&lt;p&gt;这是上位机和工业软件里非常高频的面试点。&lt;/p&gt;
+&lt;h3&gt;16. Qt 里如何创建线程？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;常见两种方式：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;继承 &lt;code&gt;QThread&lt;/code&gt;，重写 &lt;code&gt;run()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;创建 worker 对象，把它 &lt;code&gt;moveToThread()&lt;/code&gt; 到子线程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;推荐方式：&lt;/strong&gt;&lt;br /&gt;
+推荐第二种，也就是 &lt;strong&gt;QObject + moveToThread&lt;/strong&gt;，因为更符合 Qt 对事件循环、信号槽的设计，也更方便管理任务对象和线程对象。&lt;/p&gt;
+&lt;h3&gt;17. 为什么不推荐直接继承 &lt;code&gt;QThread&lt;/code&gt; 写业务逻辑？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+因为 &lt;code&gt;QThread&lt;/code&gt; 更适合作为线程控制对象，而不是业务对象。把业务逻辑写进 &lt;code&gt;run()&lt;/code&gt; 会导致职责耦合，不利于复用和事件驱动处理。更推荐把业务逻辑放在 QObject worker 中，再移动到线程执行。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;这句很常用：&lt;/strong&gt;&lt;br /&gt;
+&lt;code&gt;QThread&lt;/code&gt; 管线程，&lt;code&gt;QObject worker&lt;/code&gt; 管任务。&lt;/p&gt;
+&lt;h3&gt;18. &lt;code&gt;moveToThread()&lt;/code&gt; 是什么原理？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+&lt;code&gt;moveToThread()&lt;/code&gt; 会改变 QObject 的线程归属，也就是这个对象后续的事件、queued signal 槽执行所在线程。它本身不会“把代码搬过去立刻执行”，而是让对象归属于目标线程，由目标线程的事件循环处理相关任务。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;高频坑点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;只能改变 QObject 的线程归属&lt;/li&gt;
+&lt;li&gt;不能有 parent 时随便移动&lt;/li&gt;
+&lt;li&gt;槽函数是否在新线程执行，取决于连接方式和事件循环&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;19. 子线程里能直接操作 UI 吗？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+不能。Qt 要求 GUI 相关操作必须在主线程进行。子线程如果要更新界面，应该通过信号槽、&lt;code&gt;QMetaObject::invokeMethod()&lt;/code&gt; 或线程安全数据传递回主线程后更新 UI。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;这是必背。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;20. Qt 跨线程信号槽安全吗？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+在合适连接方式下是安全的。跨线程时默认 &lt;code&gt;AutoConnection&lt;/code&gt; 会退化为 &lt;code&gt;QueuedConnection&lt;/code&gt;，槽函数会在接收者所属线程通过事件队列执行，因此常用于线程间安全通信。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;传递的数据类型最好是 Qt 已知元类型&lt;/li&gt;
+&lt;li&gt;自定义类型跨线程传递时可能要 &lt;code&gt;qRegisterMetaType&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;21. &lt;code&gt;QThread&lt;/code&gt; 和 &lt;code&gt;std::thread&lt;/code&gt; 的区别？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;QThread&lt;/code&gt; 是 Qt 框架线程，能和 Qt 的事件循环、信号槽、对象模型很好结合&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;std::thread&lt;/code&gt; 是标准 C++ 线程，更通用、更轻量，但不直接集成 Qt 对象系统&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;项目里怎么选：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果任务和 Qt 对象、信号槽、事件循环关系强，优先 &lt;code&gt;QThread&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;如果只是纯计算任务，也可以 &lt;code&gt;std::thread&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;22. 工业上位机为什么要用多线程？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;因为工业软件里常常同时存在：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;UI 刷新&lt;/li&gt;
+&lt;li&gt;串口/网口通信&lt;/li&gt;
+&lt;li&gt;设备状态采集&lt;/li&gt;
+&lt;li&gt;数据解析&lt;/li&gt;
+&lt;li&gt;日志存储&lt;/li&gt;
+&lt;li&gt;文件导出&lt;/li&gt;
+&lt;li&gt;图像处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果都放在主线程，会导致界面卡顿甚至无响应，所以通常需要把通信、计算、存储等耗时任务放到子线程。&lt;/p&gt;
+&lt;h3&gt;23. 线程安全怎么保证？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;常见做法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;尽量通过信号槽解耦线程通信&lt;/li&gt;
+&lt;li&gt;共享数据用 &lt;code&gt;QMutex&lt;/code&gt; / &lt;code&gt;QReadWriteLock&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;控制资源访问顺序，避免死锁&lt;/li&gt;
+&lt;li&gt;尽量减少共享状态&lt;/li&gt;
+&lt;li&gt;UI 更新统一回主线程&lt;/li&gt;
+&lt;li&gt;生产者消费者场景可用队列 + 条件变量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;项目化回答更加分：&lt;/strong&gt;&lt;br /&gt;
+比如“采集线程负责读设备数据，解析线程负责协议解析，主线程只负责显示，不直接共享复杂对象，而是传递结构化结果”。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;五、Qt 容器、字符串、内存&lt;/h2&gt;
+&lt;h3&gt;24. QString 和 std::string 的区别？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;QString&lt;/code&gt; 是 Qt 的字符串类，默认支持 Unicode，适合 GUI 和 Qt 生态&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;std::string&lt;/code&gt; 是标准 C++ 字符串，通常按字节序列处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;常见转换：&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;QString qs = &quot;hello&quot;;
+std::string s = qs.toStdString();
+
+QString qs2 = QString::fromStdString(s);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;面试加分点：&lt;/strong&gt;&lt;br /&gt;
+在 Qt 项目里，界面和框架接口一般优先用 &lt;code&gt;QString&lt;/code&gt;。&lt;/p&gt;
+&lt;h3&gt;25. Qt 的内存管理和标准 C++ 有什么不同？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+Qt 在标准 C++ 内存管理基础上，增加了基于 QObject 父子关系的自动析构机制，因此很多对象不需要手动 delete。但这并不意味着完全不用考虑内存问题，非 QObject 对象、资源类和复杂生命周期对象仍然要谨慎管理。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;可以补一句：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;QWidget 及其子控件通常由父对象接管&lt;/li&gt;
+&lt;li&gt;非 QObject 的普通对象还是按 C++ 规则处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;六、界面开发高频八股&lt;/h2&gt;
+&lt;h3&gt;26. QWidget 和 QMainWindow 的区别？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;QWidget&lt;/code&gt; 是所有界面控件的基类&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QMainWindow&lt;/code&gt; 是主窗口类，内置菜单栏、工具栏、状态栏、停靠窗口、中央窗口等结构&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;怎么选：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一般主界面用 &lt;code&gt;QMainWindow&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;普通子页面、弹窗、自定义控件常用 &lt;code&gt;QWidget&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;27. &lt;code&gt;QDialog&lt;/code&gt; 和 &lt;code&gt;QWidget&lt;/code&gt; 的区别？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;QDialog&lt;/code&gt; 主要用于对话框场景，支持模态和非模态显示&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QWidget&lt;/code&gt; 更通用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;常见用法：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;exec()&lt;/code&gt;：模态对话框&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;show()&lt;/code&gt;：非模态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;28. 什么是模态对话框和非模态对话框？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模态对话框：打开后会阻塞用户与其他窗口交互，常用于确认、配置&lt;/li&gt;
+&lt;li&gt;非模态对话框：不会阻塞其他窗口操作，常用于辅助工具窗口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;29. Qt 中常用布局有哪些？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;QHBoxLayout&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QVBoxLayout&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QGridLayout&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QFormLayout&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;为什么要用布局？&lt;/strong&gt;&lt;br /&gt;
+布局可以自动管理控件位置和大小，适配窗口缩放，减少手工计算坐标。&lt;/p&gt;
+&lt;h3&gt;30. 什么是 QSS？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+QSS 是 Qt Style Sheet，类似 CSS，可以用于设置控件颜色、边框、字体、背景、状态样式等，用于统一界面风格。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;优点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;样式与逻辑分离&lt;/li&gt;
+&lt;li&gt;统一主题方便&lt;/li&gt;
+&lt;li&gt;适合工业软件做品牌化和状态提示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;缺点：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;某些复杂样式性能一般&lt;/li&gt;
+&lt;li&gt;并不是所有控件属性都像 Web CSS 一样灵活&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;31. Qt 常用的模型视图有哪些？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Qt 提供了 Model/View 架构，常见控件有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;QTableView&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QListView&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QTreeView&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;数据模型常见有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;QStringListModel&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QStandardItemModel&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;自定义 &lt;code&gt;QAbstractTableModel&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;自定义 &lt;code&gt;QAbstractItemModel&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;工业项目里为什么常用 Model/View？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据和显示分离&lt;/li&gt;
+&lt;li&gt;大数据量更易管理&lt;/li&gt;
+&lt;li&gt;易扩展排序、筛选、分页、刷新&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;32. &lt;code&gt;QTableWidget&lt;/code&gt; 和 &lt;code&gt;QTableView&lt;/code&gt; 的区别？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;QTableWidget&lt;/code&gt; 是基于 item 的表格控件，简单易用，适合小型数据表&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QTableView&lt;/code&gt; 是基于 model/view 架构的视图，适合复杂数据和大规模数据展示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;面试建议：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;小项目、配置页、简单参数表用 &lt;code&gt;QTableWidget&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;工业监控、大量数据、日志表、历史记录更建议 &lt;code&gt;QTableView + Model&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;33. 自定义委托是做什么的？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+委托主要负责视图项的绘制和编辑。通过自定义 &lt;code&gt;QStyledItemDelegate&lt;/code&gt;，可以实现单元格定制显示、颜色状态、高亮、进度条、下拉框、复选框等复杂交互。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;工业项目常见场景：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;报警项红色高亮&lt;/li&gt;
+&lt;li&gt;状态灯显示&lt;/li&gt;
+&lt;li&gt;参数编辑下拉框&lt;/li&gt;
+&lt;li&gt;设备在线/离线图标&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;七、定时器、串口、网络&lt;/h2&gt;
+&lt;h3&gt;34. Qt 中如何实现定时任务？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;常见方式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;QTimer&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;startTimer()&lt;/code&gt; + &lt;code&gt;timerEvent()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;通常项目里优先使用 &lt;code&gt;QTimer&lt;/code&gt;，更方便、可读性更好。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;工业场景：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;周期采集数据&lt;/li&gt;
+&lt;li&gt;心跳检测&lt;/li&gt;
+&lt;li&gt;定时刷新 UI&lt;/li&gt;
+&lt;li&gt;超时控制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;35. &lt;code&gt;QTimer&lt;/code&gt; 的精度怎么样？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+&lt;code&gt;QTimer&lt;/code&gt; 适合一般应用层定时任务，但它不是严格实时定时器，精度会受到系统调度、事件循环阻塞和线程负载影响。工业场景里如果要求高实时性，一般需要结合底层机制或专用实时系统。&lt;/p&gt;
+&lt;h3&gt;36. Qt 如何做串口通信？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+Qt 提供了 &lt;code&gt;QSerialPort&lt;/code&gt; 模块，可以实现串口打开、配置波特率、校验位、停止位、读写数据和异步接收。上位机项目里经常用它与 PLC、单片机、传感器、仪器设备通信。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;常见流程：&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;枚举串口&lt;/li&gt;
+&lt;li&gt;打开串口&lt;/li&gt;
+&lt;li&gt;设置波特率、数据位、校验位、停止位&lt;/li&gt;
+&lt;li&gt;写数据&lt;/li&gt;
+&lt;li&gt;监听 &lt;code&gt;readyRead()&lt;/code&gt; 读取数据&lt;/li&gt;
+&lt;li&gt;解析协议帧&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;37. 串口数据粘包拆包怎么处理？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+串口和 TCP 一样，应用层读取到的数据不一定是一帧完整协议，所以通常需要在接收缓冲区中按协议规则做粘包拆包处理，比如根据帧头、长度字段、帧尾、校验码来提取完整报文。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;非常加分，因为这是项目真问题。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;38. Qt 如何做 TCP/UDP 通信？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;TCP：&lt;code&gt;QTcpSocket&lt;/code&gt;、&lt;code&gt;QTcpServer&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;UDP：&lt;code&gt;QUdpSocket&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Qt 提供异步网络模型，可以通过信号槽处理连接建立、断开、可读事件、错误事件。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;工业常见场景：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;上位机连设备控制器&lt;/li&gt;
+&lt;li&gt;和 PLC/网关通信&lt;/li&gt;
+&lt;li&gt;远程监控平台&lt;/li&gt;
+&lt;li&gt;局域网广播发现设备&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;39. TCP 粘包是怎么回事？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+TCP 是字节流协议，不保证消息边界，所以一次接收可能读到半包、一包或多包，应用层要根据协议设计自行拆包。常见方案是固定长度、分隔符、消息头加长度字段。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;八、数据库、文件、日志&lt;/h2&gt;
+&lt;h3&gt;40. Qt 如何操作数据库？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+Qt 提供了 &lt;code&gt;QtSql&lt;/code&gt; 模块，可以通过 &lt;code&gt;QSqlDatabase&lt;/code&gt; 管理连接，用 &lt;code&gt;QSqlQuery&lt;/code&gt; 执行 SQL，也支持模型方式展示数据库数据。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;工业项目常见用途：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;保存历史数据&lt;/li&gt;
+&lt;li&gt;参数配置&lt;/li&gt;
+&lt;li&gt;用户权限&lt;/li&gt;
+&lt;li&gt;告警记录&lt;/li&gt;
+&lt;li&gt;设备运行日志&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;41. 上位机项目为什么经常要做日志系统？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+因为工业软件重视可追溯性和问题定位。日志系统可以记录设备通信、异常告警、用户操作、系统状态、调试信息，在现场问题排查时非常重要。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;面试加分回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;日志最好分级：info / warning / error / debug&lt;/li&gt;
+&lt;li&gt;支持按天切分&lt;/li&gt;
+&lt;li&gt;支持异步写盘&lt;/li&gt;
+&lt;li&gt;关键操作和异常要持久化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;九、工业软件 / 上位机项目高频问法&lt;/h2&gt;
+&lt;h3&gt;42. 上位机项目的典型架构怎么设计？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+上位机项目通常会分层设计，例如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;UI 层：页面展示、用户交互&lt;/li&gt;
+&lt;li&gt;业务层：流程控制、状态机、数据处理&lt;/li&gt;
+&lt;li&gt;通信层：串口/TCP/Modbus/PLC 协议交互&lt;/li&gt;
+&lt;li&gt;数据层：配置、日志、数据库、文件存储&lt;/li&gt;
+&lt;li&gt;设备抽象层：对不同设备统一封装接口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;如果你想答得更像做过项目：&lt;/strong&gt;&lt;br /&gt;
+我通常会尽量把“界面、通信、设备协议、业务流程”拆开，避免 UI 直接写协议解析和设备控制逻辑，这样维护性更好。&lt;/p&gt;
+&lt;h3&gt;43. 工业软件里为什么不建议把所有逻辑都写在界面类里？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+因为这样会导致 UI 类过于臃肿，业务逻辑、设备通信、数据处理和显示耦合在一起，不利于维护、测试和扩展。更合理的方式是界面只负责显示和用户交互，业务逻辑下沉到 controller、service 或 manager 层。&lt;/p&gt;
+&lt;h3&gt;44. 上位机通信模块应该注意什么？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;收发解耦&lt;/li&gt;
+&lt;li&gt;粘包拆包&lt;/li&gt;
+&lt;li&gt;超时重试&lt;/li&gt;
+&lt;li&gt;心跳机制&lt;/li&gt;
+&lt;li&gt;异常断线重连&lt;/li&gt;
+&lt;li&gt;日志记录&lt;/li&gt;
+&lt;li&gt;协议校验&lt;/li&gt;
+&lt;li&gt;状态机控制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;这题很像项目经验题。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;45. 实时刷新数据时，如何避免界面卡顿？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通信与解析放子线程&lt;/li&gt;
+&lt;li&gt;主线程只做必要的 UI 更新&lt;/li&gt;
+&lt;li&gt;控制刷新频率，不要每来一帧就全量刷新&lt;/li&gt;
+&lt;li&gt;对表格、曲线、日志做增量更新&lt;/li&gt;
+&lt;li&gt;大数据量展示用 model/view&lt;/li&gt;
+&lt;li&gt;耗时 IO 异步化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;46. 你做上位机项目时，最容易出现哪些问题？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答可直接背：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通信协议不稳定，容易出现半包、错包、超时&lt;/li&gt;
+&lt;li&gt;设备状态多，流程复杂，容易逻辑混乱&lt;/li&gt;
+&lt;li&gt;线程多了之后容易出现数据竞争和卡顿&lt;/li&gt;
+&lt;li&gt;UI 和业务耦合太深，后期改需求成本高&lt;/li&gt;
+&lt;li&gt;现场问题复现困难，所以日志和状态记录非常关键&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这类回答会显得你真的做过项目。&lt;/p&gt;
+&lt;h3&gt;47. 工业软件为什么强调稳定性而不是花哨界面？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+因为工业场景更关注可靠运行、清晰反馈、错误可追踪和操作可控。界面不是越炫越好，而是要让操作员快速识别状态、减少误操作、在异常情况下也能稳定运行。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十、面试官很爱问的“项目味”回答模板&lt;/h2&gt;
+&lt;p&gt;下面这些你可以直接套。&lt;/p&gt;
+&lt;h3&gt;48. 你在 Qt 项目里一般怎么做线程划分？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;答法模板：&lt;/strong&gt;&lt;br /&gt;
+我一般会把 UI 放在主线程，设备通信、数据采集、协议解析、图像处理或文件写入放到子线程。线程之间尽量通过信号槽传递数据，减少共享变量。如果存在共享缓存，会加锁或者用队列解耦，避免主线程被耗时任务阻塞。&lt;/p&gt;
+&lt;h3&gt;49. 你在 Qt 项目里怎么处理设备通信？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;答法模板：&lt;/strong&gt;&lt;br /&gt;
+我通常会先把底层通信和协议解析分开，通信层只负责收发字节流，协议层负责组帧、拆包、校验和命令分发。这样后面如果设备协议变化，改动范围比较小。对于异常情况会加超时、重连、日志和状态提示。&lt;/p&gt;
+&lt;h3&gt;50. 你在上位机项目里怎么设计界面和业务逻辑的关系？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;答法模板：&lt;/strong&gt;&lt;br /&gt;
+我倾向于让界面层只负责展示和用户输入，业务流程、设备控制、数据处理放到独立模块。这样做的好处是页面不会越来越臃肿，而且后期换页面或者增加设备类型时，核心逻辑可以复用。&lt;/p&gt;
+&lt;h3&gt;51. 如果数据刷新很频繁，你怎么优化？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;答法模板：&lt;/strong&gt;&lt;br /&gt;
+我会先区分哪些数据需要高频实时显示，哪些只需要低频更新。然后对界面刷新做节流，避免每次采集都触发全量重绘。对于表格和曲线控件，会尽量做增量更新；耗时解析和存储放到后台线程，主线程只负责最终显示。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十一、最常见手撕级简答题&lt;/h2&gt;
+&lt;h3&gt;52. &lt;code&gt;emit&lt;/code&gt; 是什么？&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;emit&lt;/code&gt; 只是 Qt 为可读性提供的关键字风格宏，本质上没有特殊语义，发信号最终还是调用 moc 生成的信号函数。&lt;/p&gt;
+&lt;h3&gt;53. 一个信号可以连接多个槽吗？&lt;/h3&gt;
+&lt;p&gt;可以。&lt;/p&gt;
+&lt;h3&gt;54. 多个信号可以连接同一个槽吗？&lt;/h3&gt;
+&lt;p&gt;可以。&lt;/p&gt;
+&lt;h3&gt;55. 信号槽连接重复了会怎样？&lt;/h3&gt;
+&lt;p&gt;默认会重复触发。&lt;br /&gt;
+如果不希望重复连接，可以使用 &lt;code&gt;Qt::UniqueConnection&lt;/code&gt;。&lt;/p&gt;
+&lt;h3&gt;56. &lt;code&gt;deleteLater()&lt;/code&gt; 是什么？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+&lt;code&gt;deleteLater()&lt;/code&gt; 会把对象销毁操作延迟到事件循环安全时机执行，适合在事件处理中或跨线程场景下销毁 QObject，避免立即 delete 带来的风险。&lt;/p&gt;
+&lt;h3&gt;57. 什么情况下用 &lt;code&gt;deleteLater()&lt;/code&gt; 比直接 &lt;code&gt;delete&lt;/code&gt; 更好？&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;对象正在处理事件时&lt;/li&gt;
+&lt;li&gt;对象可能还有挂起事件&lt;/li&gt;
+&lt;li&gt;跨线程回收 QObject&lt;/li&gt;
+&lt;li&gt;想避免当前调用栈中直接析构带来的问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;58. &lt;code&gt;QCoreApplication&lt;/code&gt;、&lt;code&gt;QApplication&lt;/code&gt;、&lt;code&gt;QGuiApplication&lt;/code&gt; 的区别？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;简答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;QCoreApplication&lt;/code&gt;：无 GUI 的核心应用&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QGuiApplication&lt;/code&gt;：图形界面基础，不含 QWidget&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;QApplication&lt;/code&gt;：基于 QWidget 的桌面应用程序常用类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十二、面试时最容易被追问的难点&lt;/h2&gt;
+&lt;h3&gt;59. Qt 为什么适合上位机，不适合强实时控制？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+Qt 适合做应用层界面、通信和业务逻辑，但它运行在通用操作系统和事件循环之上，不是严格实时框架。如果场景对微秒级、毫秒级确定性要求很高，通常需要底层控制器、PLC、单片机或实时系统承担核心控制，上位机更多负责监控、配置和管理。&lt;/p&gt;
+&lt;p&gt;这个回答很像真正理解工业现场。&lt;/p&gt;
+&lt;h3&gt;60. Modbus、串口、TCP 这些在上位机里怎么组织更合理？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;br /&gt;
+我会把“传输通道”和“协议逻辑”分层。比如串口、TCP 是传输层；Modbus RTU、Modbus TCP、私有协议是协议层；再往上是设备抽象层。这样可以做到更换通信方式时，不影响上层业务。&lt;/p&gt;
+&lt;h3&gt;61. 如果一个项目设备很多、协议很多，怎么避免代码越来越乱？&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;标准回答：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;抽象统一设备接口&lt;/li&gt;
+&lt;li&gt;协议解析模块化&lt;/li&gt;
+&lt;li&gt;命令和响应结构体化&lt;/li&gt;
+&lt;li&gt;状态机统一管理流程&lt;/li&gt;
+&lt;li&gt;UI、业务、通信分层&lt;/li&gt;
+&lt;li&gt;日志、错误码、超时机制标准化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十三、适合背诵的高频问答精简版&lt;/h2&gt;
+&lt;p&gt;如果你想快速背，这里给你一版最短答案。&lt;/p&gt;
+&lt;h3&gt;1. Qt 是什么？&lt;/h3&gt;
+&lt;p&gt;Qt 是跨平台 C++ 应用开发框架，除了 GUI，还提供线程、网络、数据库、串口、文件等模块，常用于桌面客户端和工业上位机。&lt;/p&gt;
+&lt;h3&gt;2. 为什么工业软件爱用 Qt？&lt;/h3&gt;
+&lt;p&gt;因为它跨平台、开发效率高、界面和通信支持完善、适合事件驱动，特别适合设备控制和数据监控类软件。&lt;/p&gt;
+&lt;h3&gt;3. QObject 有什么作用？&lt;/h3&gt;
+&lt;p&gt;QObject 是 Qt 对象模型基础，提供父子对象、信号槽、事件处理和元对象系统。&lt;/p&gt;
+&lt;h3&gt;4. 信号槽是什么？&lt;/h3&gt;
+&lt;p&gt;信号槽是 Qt 的对象通信机制，用于低耦合地传递事件和数据。&lt;/p&gt;
+&lt;h3&gt;5. 信号槽底层怎么实现？&lt;/h3&gt;
+&lt;p&gt;依赖 &lt;code&gt;Q_OBJECT&lt;/code&gt; 和 &lt;code&gt;moc&lt;/code&gt; 生成的元对象代码，通过元对象系统维护连接并调用槽函数。&lt;/p&gt;
+&lt;h3&gt;6. 线程里能直接改 UI 吗？&lt;/h3&gt;
+&lt;p&gt;不能，UI 必须在主线程更新。&lt;/p&gt;
+&lt;h3&gt;7. &lt;code&gt;QThread&lt;/code&gt; 推荐怎么用？&lt;/h3&gt;
+&lt;p&gt;推荐 QObject + &lt;code&gt;moveToThread()&lt;/code&gt;，而不是把业务都写进 &lt;code&gt;QThread::run()&lt;/code&gt;。&lt;/p&gt;
+&lt;h3&gt;8. &lt;code&gt;QTableWidget&lt;/code&gt; 和 &lt;code&gt;QTableView&lt;/code&gt; 区别？&lt;/h3&gt;
+&lt;p&gt;前者简单易用，适合小数据量；后者基于 model/view，适合复杂和大数据量场景。&lt;/p&gt;
+&lt;h3&gt;9. &lt;code&gt;update()&lt;/code&gt; 和 &lt;code&gt;repaint()&lt;/code&gt; 区别？&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;update()&lt;/code&gt; 是异步刷新，&lt;code&gt;repaint()&lt;/code&gt; 是同步立即刷新，一般优先用 &lt;code&gt;update()&lt;/code&gt;。&lt;/p&gt;
+&lt;h3&gt;10. 上位机项目最重要的点是什么？&lt;/h3&gt;
+&lt;p&gt;稳定性、通信可靠性、线程划分、日志追踪和界面与业务解耦。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;十四、我建议你这样准备这个方向的面试&lt;/h2&gt;
+&lt;p&gt;如果你是为了找工作，不要只背八股，最好把下面 4 块一起准备：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Qt 基础&lt;/strong&gt;&lt;br /&gt;
+信号槽、事件、对象树、线程、模型视图、QSS、定时器&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;通信能力&lt;/strong&gt;&lt;br /&gt;
+串口、TCP、Modbus、粘包拆包、超时重发、日志&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;项目表达&lt;/strong&gt;&lt;br /&gt;
+能讲清楚你做了什么模块，线程怎么分，协议怎么设计，卡顿怎么优化&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;工业软件思维&lt;/strong&gt;&lt;br /&gt;
+稳定性、可维护性、可追踪性、现场问题定位&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</content:encoded></item><item><title>消息队列</title><link>https://firefly.cuteleaf.cn/posts/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</link><guid isPermaLink="true">https://firefly.cuteleaf.cn/posts/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/</guid><description>关于 消息队列 的学习笔记</description><pubDate>Tue, 11 Nov 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;消息队列&lt;/p&gt;
+&lt;p&gt;介绍消息队列前，先说明system V所提供的ipc对象&lt;/p&gt;
+&lt;p&gt;与内核提供的管道、信号通信不同：system V的ipc对象实现了数据传递的容器与程序相分离，也就是说，即使程序以己经结束，但是放入到容器中的数据依然存在，除非将容器手动删除&lt;/p&gt;
+&lt;p&gt;消息队列是system V提供的一种用于多进程间进行通信的IPC对象，与linux内核提供的管道文件和信号不同，他支持双向通信，而管道文件只支持单向通信，信号则用于进程间的通知，例如子进程推出后，会向父进程发送SIGCHLD信号。相似的IPC对象还有共享内存，信号量&lt;/p&gt;
+&lt;p&gt;消息队列要保证不同的进程间打开的是相同的消息队列，需要有一个key值类似于宝箱的钥匙，不同的进程可以通过同一个key值打开同一个消息队列，对消息队列进行读取或写入&lt;/p&gt;
+&lt;p&gt;上图是消息队列的实现原理&lt;/p&gt;
+&lt;p&gt;消息队列的API&lt;/p&gt;
+&lt;p&gt;1、创建key值
+#include &amp;lt;sys/types.h&amp;gt;
+#include &amp;lt;sys/ipc.h&amp;gt;
+key_t ftok(const char *pathname, int proj_id);       //ftok(&quot;/&quot;, &apos;k&apos;);&lt;/p&gt;
+&lt;p&gt;功能：通过给定的文件以及给定的一个随机值，创建出一个4字节整数的key值，用于system V IPC对象的创建
+参数1：一个文件路径，要求是已经存在的文件路径，提供了key值3字节的内容，其中，文件的设备号占1字节，文件的inode号占2字节
+参数2：一个随机整数，取后8位（1字节）跟前面的文件共同组成key值，必须是非0的数字
+返回值：成功返回key值，失败返回-1并置位错误码&lt;/p&gt;
+&lt;p&gt;2、通过key值，创建消息队列&lt;/p&gt;
+&lt;p&gt;#include &amp;lt;sys/types.h&amp;gt;
+#include &amp;lt;sys/ipc.h&amp;gt;
+#include &amp;lt;sys/msg.h&amp;gt;
+int msgget(key_t key, int msgflg);&lt;/p&gt;
+&lt;p&gt;功能：通过给定的key值，创建出一个消息队列的对象，并返回消息队列的句柄ID，后期可以通过该ID操作整个消息队列
+参数1：key值，该值可以是IPC_PRIVATE,也可以是ftok创建出来的，前者只用于亲缘进程间的通信
+参数2：创建标识
+IPC_CREAT:创建并打开一个消息队列，如果消息队列已经存在，则直接打开
+IPC_EXCL:确保本次创建处理的是一个新的消息队列，如果消息队列已经存在，则报错，错
+误码位EEXIST
+0664：该消息队列的操作权限
+eg: IPC_CREAT|0664  或者  IPC_CREAT|IPC_EXCL|0664
+返回值：成功返回消息队列的ID号，失败返回-1并置位错误码&lt;/p&gt;
+&lt;p&gt;3、向消息队列中存放数据&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;   #include &amp;lt;sys/types.h&amp;gt;
+   #include &amp;lt;sys/ipc.h&amp;gt;
+   #include &amp;lt;sys/msg.h&amp;gt;
+   int msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;功能：向消息队列中存放一个指定格式的消息
+参数1：打开的消息队列的id号
+参数2：要发送的消息的起始地址，消息一般定义为一个结构体类型，由用户手动定义&lt;/p&gt;
+&lt;p&gt;struct msgbuf&lt;/p&gt;
+&lt;p&gt;{
+long mtype; /* message type, must be &amp;gt; 0 &lt;em&gt;/ 消息的类型
+char mtext[1]; /&lt;/em&gt; message data */ 消息正文
+};&lt;/p&gt;
+&lt;p&gt;参数3：消息正文的大小
+参数4：是否阻塞的标识
+0：标识阻塞形式向消息队列中存放消息，如果消息队列满了，就在该函数处阻塞
+IPC_NOWAIT:标识非阻塞的形式向消息队列中存放消息，如果消息队列满了，直接返回
+返回值：成功返回0，失败返回-1并置位错误码&lt;/p&gt;
+&lt;p&gt;4、从消息队列中取消息&lt;/p&gt;
+&lt;p&gt;ssize_t msgrcv(int msqid, void *msgp, size_t msgsz, long msgtyp,int msgflg);&lt;/p&gt;
+&lt;p&gt;功能：从消息队列中取数指定类型的消息放入给定的容器中
+参数1：打开的消息队列的id号
+参数2：要接收的消息的起始地址，消息一般定义为一个结构体类型，由用户手动定义&lt;/p&gt;
+&lt;p&gt;struct msgbuf
+{
+long mtype; /* message type, must be &amp;gt; 0 &lt;em&gt;/ 消息的类型
+char mtext[1]; /&lt;/em&gt; message data */ 消息正文
+};&lt;/p&gt;
+&lt;p&gt;参数3：消息正文的大小
+参数4：要接收的消息类型
+0:表示每次都取消息队列中的第一个消息，无论类型&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;0:读取队列中第一个类型为msgtyp的消息
+&amp;lt;0:读取队列中的一个消息，消息为绝对值小于msgtyp的第一个消息
+eg： 10--&amp;gt;8--&amp;gt;3--&amp;gt;6--&amp;gt;5--&amp;gt;20--&amp;gt;2
+-5: 会从队列中绝对值小于5的类型的消息中选取第一个消息，就是3
+参数5：是否阻塞的标识
+0：标识阻塞形式向消息队列中读取消息，如果消息队列空了，就在该函数处阻塞
+IPC_NOWAIT:标识非阻塞的形式向消息队列中读取消息，如果消息队列空了，直接返回
+返回值：成功返回实际读取的正文大小，失败返回-1并置位错误码&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;5、销毁消息队列&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;   #include &amp;lt;sys/types.h&amp;gt;
+   #include &amp;lt;sys/ipc.h&amp;gt;
+   #include &amp;lt;sys/msg.h&amp;gt;
+   int msgctl(int msqid, int cmd, struct msqid_ds *buf);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;功能：对给定的消息队列执行相关的操作，该操作由cmd参数而定
+参数1：消息队列的ID号
+参数2：要执行的操作
+IPC_RMID：删除一个消息队列，当cmd为该值时，第三个参数可以省略填NULL即可
+IPC_STAT：表示获取当前消息队列的属性，此时第三个参数就是存放获取的消息队列属性的容器起始地址
+IPC_SET：设置当前消息队列的属性，此时第三个参数就是要设置消息队列的属性数据的起始地址
+参数3：消息队列数据容器结构体，如果第二个参数为IPC_RMID,则该参数忽略填NULL即可，如果
+是   IPC_STAT、 IPC_SET填如下结构体：&lt;/p&gt;
+&lt;p&gt;struct msqid_ds
+{
+struct ipc_perm msg_perm;     /* Ownership and permissions &lt;em&gt;/   消息队列的拥有者和权限
+time_t          msg_stime;    /&lt;/em&gt; Time of last msgsnd(2) &lt;em&gt;/   最后一次发送消息的时间
+time_t          msg_rtime;    /&lt;/em&gt; Time of last msgrcv(2) &lt;em&gt;/   最后一次接收消息的时间
+time_t          msg_ctime;    /&lt;/em&gt; Time of last change &lt;em&gt;/      最后一次状态改变的时间
+unsigned long   __msg_cbytes; /&lt;/em&gt; Current number of bytes in queue(nonstandard) &lt;em&gt;/ 已用字节数
+msgqnum_t       msg_qnum;     /&lt;/em&gt; Current number of messages in queue &lt;em&gt;/ 消息队列中消息个数
+msglen_t        msg_qbytes;   /&lt;/em&gt; Maximum number of bytes allowed in queue &lt;em&gt;/最大消息个数
+pid_t           msg_lspid;    /&lt;/em&gt; PID of last msgsnd(2) &lt;em&gt;/    最后一次发送消息的进程pid
+pid_t           msg_lrpid;    /&lt;/em&gt; PID of last msgrcv(2) &lt;em&gt;/    最后一次读取消息的进程pid
+};
+该结构体的第一个成员类型如下
+struct ipc_perm
+{
+key_t          __key;       /&lt;/em&gt; Key supplied to msgget(2) &lt;em&gt;/   key值
+uid_t          uid;         /&lt;/em&gt; Effective UID of owner &lt;em&gt;/   当前进程的uid
+gid_t          gid;         /&lt;/em&gt; Effective GID of owner &lt;em&gt;/   当前进程的组ID
+uid_t          cuid;        /&lt;/em&gt; Effective UID of creator &lt;em&gt;/ 消息队列创建者的用户id
+gid_t          cgid;        /&lt;/em&gt; Effective GID of creator &lt;em&gt;/ 消息队列创建者的组id
+unsigned short mode;        /&lt;/em&gt; Permissions &lt;em&gt;/              消息队列的权限
+unsigned short __seq;       /&lt;/em&gt; Sequence number */          队列号
+};
+返回值：成功返回0，失败返回-1并置位错误码&lt;/p&gt;
+&lt;p&gt;注意事项：&lt;/p&gt;
+&lt;p&gt;1、对于消息而言，由两部分组成：消息的类型和消息正文，消息结构体由用户自定义
+2、对于消息队列而言，任意一个进程都可以向消息队列中发送消息，也可以从消息队列中取消息
+3、多个进程，使用相同的key值打开的是同一个消息队列
+4、对消息队列中的消息读取操作是一次性的，被读取后，消息队列中不存在该消息了
+5、消息队列的大小：16K&lt;/p&gt;
+</content:encoded></item><item><title>OpenCV</title><link>https://firefly.cuteleaf.cn/posts/opencv/</link><guid isPermaLink="true">https://firefly.cuteleaf.cn/posts/opencv/</guid><description>关于 OpenCV 的学习笔记</description><pubDate>Tue, 11 Nov 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;以下是 opencv 的常用网站&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;OpenCV 官网 https://opencv.org/&lt;/li&gt;
+&lt;li&gt;OpenCV 源代码：https://github.com/opencv/opencv&lt;/li&gt;
+&lt;li&gt;OpenCV 文档：https://docs.opencv.org/&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;OpenCV 简介&lt;/h3&gt;
+&lt;p&gt;OpenCV 是一个功能强大、应用广泛的计算机视觉库，它为开发人员提供了丰富的工具和算法，可以帮助他们快速构建各种视觉应用。&lt;/p&gt;
+&lt;p&gt;随着计算机视觉技术的不断发展，OpenCV 也将会继续发挥重要的作用。&lt;/p&gt;
+&lt;p&gt;OpenCV 提供了大量的计算机视觉算法和图像处理工具，广泛应用于图像和视频的处理、分析以及机器学习领域。&lt;/p&gt;
+&lt;h3&gt;OpenCV 安装&lt;/h3&gt;
+&lt;p&gt;访问 OpenCV 的官方下载页面：https://opencv.org/releases/。&lt;/p&gt;
+&lt;p&gt;选择适合你操作系统的版本（例如 Windows、Linux、macOS）并下载，例如 OpenCV 4.x 的 Windows 预编译包。 。&lt;/p&gt;
+&lt;h3&gt;Windows 安装 OpenCV&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;**解压下载的 OpenCV 文件：**解压到一个目录，例如 C:\opencv。&lt;/li&gt;
+&lt;li&gt;**设置环境变量：**将 OpenCV 的 bin 目录 &lt;strong&gt;C:\opencv\build\x64\vc15\bin（根据你的 Visual Studio 版本选择 vc14 或 vc15）&lt;/strong&gt; 添加到系统的 PATH 环境变量中。&lt;/li&gt;
+&lt;li&gt;**配置开发环境：**如果使用 Visual Studio，需要在项目中配置 OpenCV 的头文件路径和库文件路径。右键点击” 此电脑” -&amp;gt; “属性” -&amp;gt; “高级系统设置” -&amp;gt; “环境变量” -&amp;gt; 编辑 &lt;code&gt;Path&lt;/code&gt;，添加上述路径。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;配置 Visual Studio&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;1、打开 Visual Studio，创建一个 C++ 项目。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2、配置包含目录&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;右键项目 -&amp;gt; “属性” -&amp;gt; “VC++ 目录” -&amp;gt; “包含目录”，添加：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;C:\opencv\build\include
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;3、配置库目录&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;右键项目 -&amp;gt; “属性” -&amp;gt; “VC++ 目录” -&amp;gt; “库目录”，添加：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;C:\opencv\build\x64\vc15\lib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;4、配置链接器&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;右键项目 -&amp;gt; “属性” -&amp;gt; “链接器” -&amp;gt; “输入” -&amp;gt; “附加依赖项”，添加：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;opencv_world4xx.lib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;项目配置好之后，建议重启 IDE&lt;/p&gt;
+&lt;h3&gt;生成 VS 项目模板&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog.shadow743.xyz/wp-content/uploads/2025/10/image.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;选择导出模板&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog.shadow743.xyz/wp-content/uploads/2025/10/image-1.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;选择模板相关参数，即可生成模板&lt;/p&gt;
+&lt;h3&gt;使用模板&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://blog.shadow743.xyz/wp-content/uploads/2025/10/image-2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;选择模板并创建项目&lt;/p&gt;
+&lt;h2&gt;在 C++ 项目中使用 OpenCV&lt;/h2&gt;
+&lt;p&gt;安装完成后，你可以在 C++ 项目中使用 OpenCV。&lt;/p&gt;
+&lt;p&gt;以下是一个简单的示例程序，展示如何使用 OpenCV 加载并显示一张图片。&lt;/p&gt;
+&lt;h3&gt;1、创建 C++ 项目&lt;/h3&gt;
+&lt;p&gt;创建一个新的 C++ 源文件，例如 &lt;code&gt;main.cpp&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;编写以下代码：&lt;/p&gt;
+&lt;h2&gt;实例&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;opencv2/opencv.hpp&amp;gt;
+#include &amp;lt;iostream&amp;gt;
+ 
+int main() {
+    // 读取图片
+    cv::Mat image = cv::imread(&quot;example.jpg&quot;);
+ 
+    // 检查图片是否成功加载
+    if (image.empty()) {
+        std::cout &amp;lt;&amp;lt; &quot;无法加载图片！&quot; &amp;lt;&amp;lt; std::endl;
+        return -1;
+    }
+ 
+    // 显示图片
+    cv::imshow(&quot;Display Image&quot;, image);
+ 
+    // 等待按键
+    cv::waitKey(0);
+ 
+    return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;运行代码即可&lt;/p&gt;
+</content:encoded></item><item><title>IO多路复用</title><link>https://firefly.cuteleaf.cn/posts/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</link><guid isPermaLink="true">https://firefly.cuteleaf.cn/posts/io%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</guid><description>关于 IO 多路复用的学习笔记</description><pubDate>Tue, 11 Nov 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;IO多路复用&lt;/p&gt;
+&lt;p&gt;1&amp;gt; 引入目的&lt;/p&gt;
+&lt;p&gt;当主机没有操作系统时，或者说程序不能使用多进程或多线程完成任务的并发操作时，
+我们可以引入IO多路复用的技术，完成多任务并发执行的操作&lt;/p&gt;
+&lt;p&gt;2&amp;gt; 事件和函数的关系&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; 比如，scanf是一个阻塞函数，该函数完成的是输入事件
+ 当函数先于事件发生时，函数会阻塞等待事件的到来
+ 当函数后于事件发生时，函数就不会阻塞，直接执行
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;#include &amp;lt;myhead.h&amp;gt;
+int main(int argc, const char *argv[])
+{
+int num = 0;
+cin &amp;gt;&amp;gt; num;
+cout &amp;lt;&amp;lt; num &amp;lt;&amp;lt; endl;
+cin &amp;gt;&amp;gt; num;
+cout &amp;lt;&amp;lt; num &amp;lt;&amp;lt; endl;
+return 0;
+}&lt;/p&gt;
+&lt;p&gt;从上述例子中的第二个输入可以看出，如果事件先于函数发生，当程序再执行到函数时，函数会直接运
+行，不会阻塞了&lt;/p&gt;
+&lt;p&gt;通过一个阻塞函数实现多个阻塞事件&lt;/p&gt;
+&lt;p&gt;3&amp;gt; IO多路复用原理图&lt;/p&gt;
+&lt;p&gt;4&amp;gt; IO多路复用相关函数&lt;/p&gt;
+&lt;p&gt;select、poll&lt;/p&gt;
+&lt;p&gt;5&amp;gt; select函数：&lt;/p&gt;
+&lt;p&gt;如果man手册中没有select函数，执行指令 sudo yum install man-pages(Cent OS)&lt;/p&gt;
+&lt;p&gt;#include &amp;lt;sys/select.h&amp;gt;
+int select(int nfds, fd_set *readfds, fd_set *writefds,fd_set *exceptfds,
+struct timeval *timeout);&lt;/p&gt;
+&lt;p&gt;功能：阻塞等待文件描述符集合中是否有事件产生，如果有事件产生，则解除阻塞
+参数1：文件描述符集合中，最大的文件描述符 加1
+参数2、参数3、参数4：分别表示读集合、写集合、异常处理集合的起始地址
+由于对于写操作而言，我们也可以转换读操作，所以，只需要使用一个集合就行
+对于不使用的集合而言，直接填NULL即可
+参数5：超时时间，如果填NULL表示永久等待，如果想要设置时间，需要定义一个如下结构体类型的变量，并将地址传递进去&lt;/p&gt;
+&lt;p&gt;struct timeval {
+long    tv_sec;         /* 秒数 &lt;em&gt;/
+long    tv_usec;        /&lt;/em&gt; 微秒 &lt;em&gt;/
+};
+and
+struct timespec {
+long    tv_sec;         /&lt;/em&gt; 秒数 &lt;em&gt;/
+long    tv_nsec;        /&lt;/em&gt; 纳秒 */
+};&lt;/p&gt;
+&lt;p&gt;返回值：
+&amp;gt;0:成功返回解除本次阻塞的文件描述符的个数
+=0:表示设置的超时时间，时间已经到达，但是没有事件事件产生
+=-1：表示失败，置位错误码
+注意：当该函数解除阻塞时，文件描述符集合中，就只剩下本次触发事件的文件描述符，其余的文
+件描述符就被删除了&lt;/p&gt;
+&lt;p&gt;//专门针对于文件描述符集合提供的函数
+void FD_CLR(int fd, fd_set *set);       //将fd文件描述符从容器set中删除
+int  FD_ISSET(int fd, fd_set *set);     //判断fd文件描述符，是否存在于set容器中
+void FD_SET(int fd, fd_set *set);      //将fd文件描述符，放入到set容器中
+void FD_ZERO(fd_set *set);               //清空set容器&lt;/p&gt;
+&lt;p&gt;6&amp;gt; select函数的基本使用方式&lt;/p&gt;
+&lt;p&gt;#include &amp;lt;myhead.h&amp;gt;
+#define SER_PORT 8888          //服务器端口号
+#define SER_IP &quot;192.168.31.49&quot;     //服务器IP地址
+int main(int argc, const char &lt;em&gt;argv[])
+{
+//1、创建用于连接的套接字文件描述符
+int sfd = socket(AF_INET, SOCK_STREAM, 0);
+//参数1：AF_INET表示使用的是ipv4的通信协议
+//参数2：SOCK_STREAM表示使用的是tcp通信
+//参数3：由于参数2指定了协议，参数3填0即可
+if(sfd == -1)
+{
+perror(&quot;socket error&quot;);
+return -1;
+}
+printf(&quot;socket success sfd = %d\n&quot;, sfd);         //3
+//2、绑定ip地址和端口号
+//2.1 填充要绑定的ip地址和端口号结构体
+struct sockaddr_in sin;
+sin.sin_family = AF_INET;       //通信域
+sin.sin_port = htons(SER_PORT);   //端口号
+sin.sin_addr.s_addr = inet_addr(SER_IP);    //ip地址
+//2.2 绑定工作
+//参数1：要被绑定的套接字文件描述符
+//参数2：要绑定的地址信息结构体，需要进行强制类型转换，防止警告
+//参数3：参数2的大小
+if(bind(sfd, (struct sockaddr&lt;/em&gt;)&amp;amp;sin, sizeof(sin)) ==-1)
+{
+perror(&quot;bind error&quot;);
+return -1;
+}
+printf(&quot;bind success\n&quot;);
+//3、启动监听
+//参数1：要启动监听的文件描述符
+//参数2：挂起队列的长度
+if(listen(sfd, 128) ==-1)
+{
+perror(&quot;listen error&quot;);
+return -1;
+}
+printf(&quot;listen success\n&quot;);
+//4、阻塞等待客户端的连接请求
+//定义变量，用于接受客户端地址信息结构体
+struct sockaddr_in cin;             //用于接收地址信息结构体的
+socklen_t socklen = sizeof(cin);        //用于接收地址信息的长度
+//定义文件描述符集合
+fd_set readfds, tempfds;       //读文件描述符集合
+//将该文件描述符集合清空
+FD_ZERO(&amp;amp;readfds);
+//将0号文件描述符以及sfd文件描述符放入到集合中
+FD_SET(0, &amp;amp;readfds);
+FD_SET(sfd, &amp;amp;readfds);
+while(1)
+{
+//将reafds备份一份放入tempfds中
+tempfds = readfds;
+//调用阻塞函数，完成对文件描述符集合的管理工作
+int res = select(sfd+1, &amp;amp;tempfds, NULL, NULL, NULL);
+if(res == -1)
+{
+perror(&quot;select error&quot;);
+return -1;
+}else if(res == 0)
+{
+printf(&quot;time out !!!\n&quot;);
+return -1;
+}
+//程序执行至此，表示一定有其中至少一个文件描述符产生了事件，只需要判断哪个文件描述还在集合中
+//就说明该文件描述符产生了事件
+//表示sfd文件描述符触发了事件
+if(FD_ISSET(sfd, &amp;amp;tempfds))
+{
+int newfd = accept(sfd, (struct sockaddr *)&amp;amp;cin, &amp;amp;socklen);
+//参数1：服务器套接字文件描述符
+//参数2：用于接收客户端地址信息结构体的容器，如果不接收，也可以填NULL
+//参数3：接收参数2的大小，如果参数2为NULL，则参数3也是NULL
+if(newfd == -1)
+{
+perror(&quot;accept error&quot;);
+return -1;
+}
+printf(&quot;[%s:%d]:已连接成功，newfd = %d!!!!\n&quot;, inet_ntoa(cin.sin_addr),  ntohs(cin.sin_port), newfd);
+}
+//判断0号文件描述符是否产生了事件
+if(FD_ISSET(0, &amp;amp;tempfds))
+{
+char wbuf[128] = &quot;&quot;;     //字符数组
+fgets(wbuf, sizeof(wbuf), stdin);      //从终端读取数据,阻塞函数
+printf(&quot;触发了键盘输入事件：%s\n&quot;, wbuf);
+}&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;}
+close(sfd);
+std::cout &amp;lt;&amp;lt; &quot;Hello, World!&quot; &amp;lt;&amp;lt; std::endl;
+return 0;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;7&amp;gt; select 实现TCP并发服务器&lt;/p&gt;
+&lt;p&gt;##include &amp;lt;myhead.h&amp;gt;
+#define SER_PORT 8888            // 服务器端口号
+#define SER_IP &quot;192.168.189.128&quot; // 服务器IP地址
+int main(int argc, const char *argv[])
+{
+// 1、创建用于连接的套接字文件描述符
+int sfd = socket(AF_INET, SOCK_STREAM, 0);
+// 参数1：AF_INET表示使用的是ipv4的通信协议
+// 参数2：SOCK_STREAM表示使用的是tcp通信
+// 参数3：由于参数2指定了协议，参数3填0即可
+if (sfd == -1)
+{
+perror(&quot;socket error&quot;);
+return -1;
+}
+printf(&quot;socket sfd = %d\n&quot;, sfd);&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// 2、绑定ip地址和端口号
+// 2.1 填充要绑定的ip地址和端口号结构体
+struct sockaddr_in addr;
+addr.sin_family = AF_INET;                // 通信域
+addr.sin_port = htons(SER_PORT);          // 端口号转换为网络字节序
+addr.sin_addr.s_addr = inet_addr(SER_IP); // IP地址转换为网络字节序
+
+// 2.2 绑定工作
+// 参数1：要被绑定的套接字文件描述符
+// 参数2：要绑定的地址信息结构体，需要进行强制类型转换，防止警告
+// 参数3：参数2的大小
+if (bind(sfd, (const sockaddr *)&amp;amp;addr, sizeof(addr)) == -1)
+{
+    perror(&quot;bind error&quot;);
+    return -1;
+}
+printf(&quot;bind success\n&quot;);
+
+// 3、启动监听
+// 参数1：要启动监听的文件描述符
+// 参数2：挂起队列的长度
+if (listen(sfd, 128) == -1)
+{
+    perror(&quot;listen error&quot;);
+    return -1;
+}
+printf(&quot;listen success\n&quot;);
+
+// 4、阻塞等待客户端的连接请求
+// 定义变量，用于接受客户端地址信息结构体
+struct sockaddr_in cin;
+socklen_t len = sizeof(cin);
+
+fd_set readfd, tempfd;
+FD_ZERO(&amp;amp;readfd);
+FD_SET(0, &amp;amp;readfd);
+FD_SET(sfd, &amp;amp;readfd);
+
+// 定义最大文件描述符
+int maxfd = sfd;
+
+// 定于地址信息结构体数组
+struct sockaddr_in cin_arr[1024];
+
+while (1)
+{
+    tempfd = readfd;
+    int ret = select(maxfd + 1, &amp;amp;tempfd, NULL, NULL, NULL);
+    if (ret == -1)
+    {
+        perror(&quot;select error&quot;);
+        return -1;
+    }
+    else if (ret == 0)
+    {
+        printf(&quot;time out\n&quot;);
+        return -1;
+    }
+
+    if (FD_ISSET(sfd, &amp;amp;tempfd))
+    {
+        int newfd = accept(sfd, (struct sockaddr *)&amp;amp;cin, &amp;amp;len);
+        // 参数1：服务器套接字文件描述符
+        // 参数2：用于接收客户端地址信息结构体的容器，如果不接收，也可以填NULL
+        // 参数3：接收参数2的大小，如果参数2为NULL，则参数3也是NULL
+
+        if (newfd == -1)
+        {
+            perror(&quot;accept error&quot;);
+            return -1;
+        }
+        printf(&quot;[%s:%d] 连接成功\n&quot;, inet_ntoa(cin.sin_addr), ntohs(cin.sin_port));
+
+        // 建立地址信息和文件描述符的索引关系
+        cin_arr[newfd] = cin;
+
+        // 添加新的文件描述符
+        FD_SET(newfd, &amp;amp;readfd);
+
+        if (maxfd &amp;lt; newfd)  maxfd = newfd;
+    }
+
+    if (FD_ISSET(0, &amp;amp;tempfd))
+    {
+        // 将输入的信息发送到所有客户端
+        char wbuf[128] = &quot;&quot;;
+        fgets(wbuf, sizeof(wbuf), stdin);
+        for(int i=4;i&amp;lt;=maxfd;i++)
+        {
+            if (FD_ISSET(i, &amp;amp;readfd))
+            {
+                if (send(i, wbuf, strlen(wbuf), 0) == -1)
+                {
+                    perror(&quot;send error&quot;);
+                    return -1;
+                }
+                printf(&quot;[%s:%d]:发送成功\n&quot;, inet_ntoa(cin_arr[i].sin_addr), ntohs(cin_arr[i].sin_port));
+            }
+        }
+    }
+
+    for (int i = 4; i &amp;lt;= maxfd; i++)
+    {
+        if (FD_ISSET(i, &amp;amp;tempfd))
+        {
+            // 5、数据收发
+            char rbuf[128] = &quot;&quot;; // 数据容器
+            // 清空容器中的内容
+            bzero(rbuf, sizeof(rbuf));
+            // 从套接字中读取消息
+            int res = recv(i, rbuf, sizeof(rbuf), 0);
+            if (res == 0)
+            {
+                printf(&quot;[%s:%d]:&quot;, inet_ntoa(cin_arr[i].sin_addr), ntohs(cin_arr[i].sin_port));
+                printf(&quot;对端已经下线\n&quot;);
+                // 6、关闭套接字
+                close(i);
+                FD_CLR(i,&amp;amp;readfd);
+
+                continue;
+            }
+            printf(&quot;[%s:%d]:%s\n&quot;, inet_ntoa(cin_arr[i].sin_addr), ntohs(cin_arr[i].sin_port), rbuf);
+            // 对收到的数据处理一下，回给客户端
+            strcat(rbuf, &quot;*_*&quot;);
+            // 将消息发送给客户端
+            if (send(i, rbuf, strlen(rbuf), 0) == -1)
+            {
+                perror(&quot;send error&quot;);
+                return -1;
+            }
+            printf(&quot;发送成功\n&quot;);
+        }
+    }
+}
+
+close(sfd);
+
+return 0;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;8&amp;gt; select实现TCP并发服务器的模型&lt;/p&gt;
+&lt;p&gt;sfd = socket();        //创建用于连接的套接字文件描述符
+bind();                //绑定ip和端口号
+listen();               //监听
+fd_set  readfds, tempfds;    //定义文件描述符集合
+FD_ZERO();        //清空容器
+FD_SET();         //将文件描述符放入容器
+maxfd = sfd;         //记录最大的文件描述符
+while(1)
+{
+tempfds = readfds;      //备份一份容器
+select(maxfd, &amp;amp;readfds, NULL, NULL, NULL);     //阻塞等待集合中是否有事件产生&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;//判断相关文件描述符是否在集合中
+if(FD_ISSET(sfd, &amp;amp;tempfds))
+{
+    newfd = accept();      //接收客户端请求
+    FD_SET(newfd, &amp;amp;readfds);    //将新文件描述符放入集合
+    //更新maxfd
+}
+
+//判断是否是客户端发来数据
+for(i=4; i&amp;lt;=maxfd; i++)
+{
+    send();
+    recv();
+    close(i);     //退出客户端
+    FD_CLR(i, &amp;amp;readfds);
+    //更新maxfd
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;}
+//关闭监听
+close(sfd);&lt;/p&gt;
+&lt;p&gt;9&amp;gt; 使用poll实现IO多路复用&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;   #include &amp;lt;poll.h&amp;gt;
+   int poll(struct pollfd *fds, nfds_t nfds, int timeout);
+
+   功能：阻塞等待文件描述符集合中是否有事件产生，如果有，则解除阻塞，返回本次触发事件的文件描述符个数
+   参数1：文件描述符集合容器的起始地址，是一个结构体数组，结构体类型如下
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;struct pollfd
+{
+int   fd;         /* 文件描述符 &lt;em&gt;/
+short events;     /&lt;/em&gt; 要等待的事件：由用户填写 &lt;em&gt;/
+short revents;    /&lt;/em&gt; 实际发生的事件 ：调用函数结束后，内核会自动设置*/
+};&lt;/p&gt;
+&lt;p&gt;关于事件对应的位：
+POLLIN:读事件
+POLLOUT：写事件&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;   参数2：集合中文件描述符的个数
+   参数3：超时时间，负数表示永久等待，0表示非阻塞
+   返回值：
+        &amp;gt;0:表示触发本次解除阻塞事件的文件描述符的个数
+        =0:表示超时
+        =-1:出错，置位错误码
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;10&amp;gt; poll的使用实例&lt;/p&gt;
+&lt;p&gt;poll完成TCP客户端中发送数据和读取数据的并发&lt;/p&gt;
+&lt;p&gt;#include &amp;lt;myhead.h&amp;gt;
+#define SER_PORT 8888            // 服务器端口号
+#define SER_IP &quot;192.168.174.128&quot; // 服务器IP地址
+#define CLI_PORT 9999            // 客户端端口号
+#define CLI_IP &quot;192.168.174.128&quot; // 客户端ip地址
+int main(int argc, const char *argv[])
+{
+// 1、创建用于通信的客户端套接字文件描述符
+int cfd = socket(AF_INET, SOCK_STREAM, 0);
+if (cfd == -1)
+{
+perror(&quot;socket error&quot;);
+return -1;
+}
+printf(&quot;socket success cfd = %d\n&quot;, cfd); // 3
+// 2、绑定ip地址和端口号(可选)
+// 2.1 填充要绑定的地址信息结构体
+struct sockaddr_in cin;
+cin.sin_family = AF_INET;
+cin.sin_port = htons(CLI_PORT);
+cin.sin_addr.s_addr = inet_addr(CLI_IP);
+// 2.2 绑定工作
+if (bind(cfd, (struct sockaddr *)&amp;amp;cin, sizeof(cin)) == -1)
+{
+perror(&quot;bind error&quot;);
+return -1;
+}
+printf(&quot;bind success\n&quot;);
+// 3、连接服务器
+// 3.1 填充要连接的服务器地址信息结构体
+struct sockaddr_in sin;
+sin.sin_family = AF_INET;                // 通信域
+sin.sin_port = htons(SER_PORT);          // 端口号
+sin.sin_addr.s_addr = inet_addr(SER_IP); // 服务器ip地址
+// 3.2 连接工作
+if (connect(cfd, (struct sockaddr *)&amp;amp;sin, sizeof(sin)) == -1)
+{
+perror(&quot;connect error&quot;);
+return -1;
+}
+printf(&quot;连接服务器成功\n&quot;);
+// 使用poll完成终端输入和套接字接收数据的并发执行
+struct pollfd pfds[2]; // pfds[0]   pfds[1]
+// 分别给数组中两个文件描述符成员赋值
+pfds[0].fd = 0;          // 表示检测0号
+pfds[0].events = POLLIN; // 表示检测的是读事件
+pfds[1].fd = cfd;        // 检测cfd文件描述符
+pfds[1].events = POLLIN; // 检测读事件
+// 4、数据收发
+char wbuf[128] = &quot;&quot;;
+while (1)
+{
+int res = poll(pfds, 2, -1);
+// 功能：阻塞等待文件描述符集合中是否有事件产生
+// 参数1：文件描述符集合起始地址
+// 参数2：文件描述符个数
+// 参数3：表示永久等待
+if (res == -1)
+{
+perror(&quot;poll error&quot;);
+return -1;
+}
+// 程序执行至此，表示文件描述符容器中，有事件产生
+// 表示0号文件描述符的事件
+if (pfds[0].revents == POLLIN)
+{
+// 清空容器
+bzero(wbuf, sizeof(wbuf));
+// 从终端获取数据
+fgets(wbuf, sizeof(wbuf), stdin); // 0
+wbuf[strlen(wbuf) - 1] = 0;       // 将换行改成 &apos;\0&apos;
+// 将数据发送给服务器
+if (send(cfd, wbuf, sizeof(wbuf), 0) == -1)
+{
+perror(&quot;send error&quot;);
+return -1;
+}
+}
+// 表示有客户端发来消息
+if (pfds[1].revents == POLLIN)
+{
+// 接受服务器发送过来的消息
+if (recv(cfd, wbuf, sizeof(wbuf), 0) == 0) // cfd
+{
+printf(&quot;对端已经下线\n&quot;);
+break;
+}
+printf(&quot;收到服务器消息为：%s\n&quot;, wbuf);
+}
+}
+// 5、关闭套接字
+close(cfd);
+std::cout &amp;lt;&amp;lt; &quot;Hello, World!&quot; &amp;lt;&amp;lt; std::endl;
+return 0;
+}&lt;/p&gt;
+&lt;p&gt;11&amp;gt; 总结select和poll的区别&lt;/p&gt;
+&lt;p&gt;1、select管理三个文件描述符集合，poll只管理一个，但是，可以操作很多事件
+2、select管理的文件描述符有上限，一般是1024个，而poll管理文件描述符没有这个限制
+3、对于效率而言，poll的效率比select的略高&lt;/p&gt;
+</content:encoded></item></channel></rss>
