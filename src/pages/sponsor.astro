@@ -73,15 +73,28 @@ const showSponsorsList = sponsorConfig.showSponsorsList !== false;
           
                         <!-- 二维码或链接 -->
                         {method.qrCode && (
-                          <div class="relative w-full max-w-[200px] aspect-square bg-white rounded-lg p-4 shadow-md mb-4">
-                            <img
-                              src={url(method.qrCode)}
-                              alt={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
-                              class="w-full h-full object-contain"
-                              loading="lazy"
-                            />
-                          </div>
-                        )}
+                          <div class="relative w-full max-w-[200px] aspect-square bg-white rounded-lg p-4 shadow-md mb-4 group cursor-pointer" 
+                             onclick={`openModal('modal-${method.name.toLowerCase().replace(/\s/g, '-')}')`}>
+                            <img
+                              src={url(method.qrCode)}
+                              alt={`${method.name} ${i18n(I18nKey.scanToSponsor)}`}
+                              class="w-full h-full object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+                              loading="lazy"
+                            />
+                          </div>
+
+                             <div 
+                                id={`modal-${method.name.toLowerCase().replace(/\s/g, '-')}`} 
+                                class="qr-modal" 
+                                onclick="closeModal(this.id)"
+                             >
+                               <div class="modal-content" onclick="event.stopPropagation()">
+                                 <span class="close" onclick={`closeModal('modal-${method.name.toLowerCase().replace(/\s/g, '-')}')`}>&times;</span>
+                                 <img src={url(method.qrCode)} alt={`${method.name} 放大二维码`}>
+                                 <p class="text-lg font-semibold mt-4 text-black">{method.description}</p>
+                               </div>
+                             </div>
+                        )}
                         
                         {method.link && (
                           <a
@@ -169,7 +182,111 @@ const showSponsorsList = sponsorConfig.showSponsorsList !== false;
       )}
     </div>
   </div>
+  <script is:inline>
+  // JavaScript 函数来控制模态框的显示/隐藏
+  function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.style.display = "flex";
+      // 阻止背景滚动
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      modal.style.display = "none";
+      // 恢复背景滚动
+      document.body.style.overflow = "auto";
+    }
+  }
+
+  // 确保点击 ESC 键也能关闭模态框
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.qr-modal').forEach(modal => {
+        if (modal.style.display === 'flex') {
+          closeModal(modal.id);
+        }
+      });
+    }
+  });
+</script>
 </MainGridLayout>
+
+<style>
+  /* --- 模态框 (Modal) 样式 --- */
+  .qr-modal {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    z-index: 9999; /* 确保在最顶层 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /* 使用深色半透明背景，与您的深色模式适配 */
+    background-color: rgba(0, 0, 0, 0.9); 
+    
+    /* 居中内容 */
+    display: none; /* 默认 display:none, 启用时变为 flex */
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90vh; 
+    position: relative;
+    text-align: center;
+    /* 确保模态框背景是白色，以便二维码清晰可见 */
+    background: #fff; 
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content img {
+    /* 放大后的二维码尺寸 */
+    max-width: 400px; 
+    max-height: 70vh;
+    height: auto;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+    /* 确保图片加载时有动画效果 */
+    animation: zoomIn 0.3s; 
+  }
+
+  /* 关闭按钮 */
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: #333;
+    z-index: 10;
+    font-size: 40px;
+    font-weight: 300;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .close:hover {
+    color: #c93;
+  }
+  
+  @keyframes zoomIn {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style>
 
 <style>
   /* 透明模式下使用半透明背景 */

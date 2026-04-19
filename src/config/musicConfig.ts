@@ -21,7 +21,7 @@ export const musicPlayerConfig: MusicPlayerConfig = {
     type: "playlist",
 
     // 歌单/专辑/单曲 ID 或搜索关键词
-    id: "10046455237", // 网易云音乐歌单ID示例
+    id: "8041051670", // 网易云音乐歌单ID示例
 
     // 认证 token（可选）
     auth: "",
@@ -42,13 +42,13 @@ export const musicPlayerConfig: MusicPlayerConfig = {
   // 本地音乐配置（当 mode 为 'local' 时使用）
   local: {
     playlist: [
-      {
-        name: "使一颗心免于哀伤",
-        artist: "知更鸟 / HOYO-MiX / Chevy",
-        url: "/assets/music/使一颗心免于哀伤-哼唱.wav",
-        cover: "/assets/music/cover/109951169585655912.jpg",
-        lrc: "", // 歌词内容，支持 LRC 格式
-      },
+      // {
+      //   name: "使一颗心免于哀伤",
+      //   artist: "知更鸟 / HOYO-MiX / Chevy",
+      //   url: "/assets/music/使一颗心免于哀伤-哼唱.wav",
+      //   cover: "/assets/music/cover/109951169585655912.jpg",
+      //   lrc: "", // 歌词内容，支持 LRC 格式
+      // },
     ],
   },
 

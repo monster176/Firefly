@@ -7,6 +7,12 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Roboto", "sans-serif", ...defaultTheme.fontFamily.sans],
+        serif: ["FangSong",
+          "STSong",
+          "SimSun", "HanYi"
+           
+          
+      ],
       },
     },
   },

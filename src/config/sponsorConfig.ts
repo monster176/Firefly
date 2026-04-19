@@ -24,43 +24,31 @@ export const sponsorConfig: SponsorConfig = {
     {
       name: "微信",
       icon: "fa6-brands:weixin",
-      qrCode: "/assets/images/sponsor/wechat.png", // 收款码图片路径
+      qrCode: "/assets/images/sponsor/WeChat.png", // 收款码图片路径
       link: "",
       description: "使用 微信 扫码赞助",
       enabled: true,
     },
     {
-      name: "爱发电",
-      icon: "simple-icons:afdian",
+      name: "bilibili",
+      icon: "fa6-brands:bilibili",
       qrCode: "",
-      link: "https://afdian.com/a/cuteleaf",
-      description: "通过 爱发电 进行赞助",
+      link: "https://space.bilibili.com/3493120197004169",
+      description: "通过 b站的充电计划 进行赞助",
       enabled: true,
     },
     {
       name: "Github",
       icon: "fa6-brands:github",
       qrCode: "",
-      link: "https://github.com/CuteLeaf/Firefly",
-      description: "点个Star就是最大的支持",
+      link: "https://github.com/monster176",
+      description: "点个Follow就是最大的支持",
       enabled: true,
     },
   ],
 
   // 赞助者列表（可选）
   sponsors: [
-    // 示例：已实名赞助者
-    {
-      name: "夏叶",
-      amount: "¥50",
-      date: "2025-10-01",
-      message: "感谢分享！",
-    },
-    // 示例：匿名赞助者
-    {
-      name: "匿名用户",
-      amount: "¥20",
-      date: "2025-10-01",
-    },
+    
   ],
 };

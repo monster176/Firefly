@@ -5,40 +5,82 @@ import type { FriendLink } from "../types/config";
 // 友链配置
 export const friendsConfig: FriendLink[] = [
   {
-    title: "夏夜流萤",
+    title: "reschen",
     imgurl:
-      "https://q1.qlogo.cn/g?b=qq&nk=7618557&s=640",
-    desc: "总有一场相遇，是互相喜欢的！",
-    siteurl: "https://blog.cuteleaf.cn",
+      "https://blog.reschen.cn:888/upload/6421ea0c-1c5e-47bb-966f-546a84888804.png",
+    desc: "春日才看杨柳绿，秋风又见菊花黄",
+    siteurl: "https://blog.reschen.cn:888/",
     tags: ["Blog"],
     weight: 10, // 权重，数字越大排序越靠前
     enabled: true, // 是否启用
   },
   {
-    title: "Firefly Docs",
-    imgurl: "https://docs-firefly.cuteleaf.cn/logo.png",
-    desc: "Firefly主题模板文档",
-    siteurl: "https://docs-firefly.cuteleaf.cn",
-    tags: ["Docs"],
-    weight: 9,
-    enabled: true,
+    title: "nomo",
+    imgurl:
+      "https://blog.nomo.run/upload/2024/01/Toss.png",
+    desc: "太牛逼了什么都没留下",
+    siteurl: "https://blog.nomo.run/",
+    tags: ["Blog"],
+    weight: 9, // 权重，数字越大排序越靠前
+    enabled: true, // 是否启用
   },
   {
-    title: "Firefly",
-    imgurl: "https://docs-firefly.cuteleaf.cn/logo.png",
-    desc: "Firefly 一款清新美观的 Astro 博客主题模板",
-    siteurl: "https://github.com/CuteLeaf/Firefly",
-    tags: ["GitHub", "Theme"],
-    weight: 9,
-    enabled: true,
+    title: "AI创新社",
+    imgurl:
+      "https://blog.elsworld.cn:8443/upload/AI%E5%88%9B%E6%96%B0%E7%A4%BE-logo.png",
+    desc: "用创造力解码智能新纪元",
+    siteurl: "https://www.aicx.qzz.io/",
+    tags: ["Blog"],
+    weight: 9, // 权重，数字越大排序越靠前
+    enabled: true, // 是否启用
   },
   {
-    title: "Astro",
-    imgurl: "https://avatars.githubusercontent.com/u/44914786?v=4&s=640",
-    desc: "The web framework for content-driven websites. ⭐️ Star to support our work!",
-    siteurl: "https://github.com/withastro/astro",
-    tags: ["Framework"],
-    weight: 8,
+    title: "网安靶场",
+    imgurl:
+      "/assets/images/ctf.webp",
+    desc: "",
+    siteurl: "http://134.175.73.219/",
+    tags: ["Blog"],
+    weight: 9, // 权重，数字越大排序越靠前
+    enabled: true, // 是否启用
+  },
+  {
+    title: "Lixiney",
+    imgurl:
+      "https://blog.lixey.top/img/favicon.png",
+    desc: "常应常静，真常应物。真常得性，常清静矣。",
+    siteurl: "https://blog.lixey.top/",
+    tags: ["Blog"],
+    weight: 9, // 权重，数字越大排序越靠前
+    enabled: true, // 是否启用
+  },
+  {
+    title: "Kaner's Blog",
+    imgurl:
+      "https://blog.kanerel.cn:888/upload/07280943981748968be9a9166617eb5d_1.png",
+    desc: "orz每一天",
+    siteurl: "https://blog.kanerel.cn:888/",
+    tags: ["Blog"],
+    weight: 9, // 权重，数字越大排序越靠前
+    enabled: true, // 是否启用
+  },
+  {
+    title: "71so 的神秘鸟窝",
+    imgurl:
+      "/assets/images/71so.png",
+    desc: "After Futurehttp://blog.afterfuture.xyz",
+    siteurl: "http://115.120.246.203:8090/",
+    tags: ["Blog"],
+    weight: 9, // 权重，数字越大排序越靠前
+    enabled: true, // 是否启用
+  },
+  {
+    title: "TH の记录",
+    imgurl: "https://ts2.tc.mm.bing.net/th/id/OIP-C.dosIr_x-nV6SMw8sD6Q0hQHaNE",
+    desc: "不值一提的小菜",
+    siteurl: "https://blog.t6zzq.xyz/",
+    tags: ["Blog"],
+    weight: 9,
     enabled: true,
   },
 ];

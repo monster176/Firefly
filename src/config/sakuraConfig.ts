@@ -5,8 +5,8 @@ export const sakuraConfig: SakuraConfig = {
   sakuraNum: 21, // 樱花数量
   limitTimes: -1, // 樱花越界限制次数，-1为无限循环
   size: {
-    min: 0.5, // 樱花最小尺寸倍数
-    max: 1.1, // 樱花最大尺寸倍数
+    min: 0.25, // 樱花最小尺寸倍数
+    max: 0.75, // 樱花最大尺寸倍数
   },
   opacity: {
     min: 0.3, // 樱花最小不透明度
@@ -14,12 +14,12 @@ export const sakuraConfig: SakuraConfig = {
   },
   speed: {
     horizontal: {
-      min: -1.7, // 水平移动速度最小值
-      max: -1.2, // 水平移动速度最大值
+      min: -0.5, // 水平移动速度最小值
+      max: -1, // 水平移动速度最大值
     },
     vertical: {
-      min: 1.5, // 垂直移动速度最小值
-      max: 2.2, // 垂直移动速度最大值
+      min: 0.5, // 垂直移动速度最小值
+      max: 0.7, // 垂直移动速度最大值
     },
     rotation: 0.03, // 旋转速度
     fadeSpeed: 0.03, // 消失速度，不应大于最小不透明度

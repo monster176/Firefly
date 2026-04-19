@@ -456,3 +456,37 @@ html {
 .pagination-info {
   @apply text-sm text-[var(--text-secondary)] text-center mb-2;
 }
+
+/* /src/styles/main.css */
+
+/* ------------------------------------------------ */
+/* 🚀 在这里添加您的 @font-face 规则 */
+/* ------------------------------------------------ */
+
+@font-face {
+    /* 确保这里的名称与 tailwind.config.js 中设置的名称一致！ */
+    font-family: 'zihun'; 
+    
+    /* 路径是相对于 /public 目录的 */
+    src: url('/fonts/zihun.ttf') format('truetype'); 
+         
+    font-weight: normal; 
+    font-style: normal;
+    font-display: swap; 
+  }
+
+@font-face {
+    /* 确保这里的名称与 tailwind.config.js 中设置的名称一致！ */
+    font-family: 'HanYi'; 
+    
+    /* 路径是相对于 /public 目录的 */
+    src: url('/fonts/HanYi.ttf') format('truetype'); 
+         
+    font-weight: normal; 
+    font-style: normal;
+    font-display: swap; 
+  }
+  
+  /* ------------------------------------------------ */
+  /* 以下是 main.css 的原有内容... */
+  /* ------------------------------------------------ */

@@ -6,10 +6,10 @@ import { fontConfig } from "./fontConfig";
 const SITE_LANG = "zh_CN";
 
 export const siteConfig: SiteConfig = {
-  title: "Firefly",
-  subtitle: "Demo site",
+  title: "次元補給ステーション",
+  subtitle: "",
   description:
-    "Firefly 是一款基于 Astro 框架开发的清新美观且现代化个人博客主题，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。",
+    "Welcome to ShadowGarden !!!",
   keywords: [
     "Firefly",
     "Fuwari",
@@ -35,6 +35,11 @@ export const siteConfig: SiteConfig = {
       theme: "light", // 可选，指定主题 'light' | 'dark'
       sizes: "32x32", // 可选，图标大小
     },
+    {
+      src: "/assets/images/favicon.ico", // 图标文件路径
+      theme: "dark", // 可选，指定主题 'light' | 'dark'
+      sizes: "32x32", // 可选，图标大小
+    },
   ],
 
   // 导航栏Logo
@@ -47,7 +52,7 @@ export const siteConfig: SiteConfig = {
     value: "/assets/images/LiuYingPure3.svg",
     alt: "🍀",
   },
-  navbarTitle: "Firefly", // 导航栏标题，可以设置为与 title 不同的值，如果不设置则使用 title
+  navbarTitle: "Shadow", // 导航栏标题，可以设置为与 title 不同的值，如果不设置则使用 title
 
   // 追番配置
   bangumi: {
@@ -95,9 +100,9 @@ export const siteConfig: SiteConfig = {
     // 背景图片配置
     src: {
       // 桌面背景图片
-      desktop: "/assets/images/d1.webp",
+      desktop: "https://t.alcy.cc/pc",
       // 移动背景图片
-      mobile: "/assets/images/m1.webp",
+      mobile: "https://t.alcy.cc/pc",
     },
 
     // Banner模式特有配置
@@ -111,7 +116,7 @@ export const siteConfig: SiteConfig = {
         // 主页显示自定义文本（全局开关）
         enable: true,
         // 主页横幅主标题
-        title: "Lovely firefly!",
+        title: "次元補給ステーション",
         // 主页横幅副标题
         subtitle: [
           "In Reddened Chrysalis, I Once Rest",
