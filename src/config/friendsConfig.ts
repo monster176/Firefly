@@ -86,6 +86,15 @@ export const friendsConfig: FriendLink[] = [
     weight: 9,
     enabled: true,
   },
+  {
+    title: "Xenith",
+    imgurl: "https://xustalis.site/blog/assets/images/avatar.jpg",
+    desc: "Xenith 的个人博客。",
+    siteurl: "https://xustalis.site/blog/",
+    tags: ["Blog"],
+    weight: 9,
+    enabled: true,
+  },
 ];
 
 // 获取启用的友链并按权重排序
